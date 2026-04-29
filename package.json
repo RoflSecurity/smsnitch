@@ -1,5 +1,5 @@
 {
-  "name": "smsnitch-server",
+  "name": "smsnitch-client",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,14 +8,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RoflSecurity/smsnitch-server.git"
+    "url": "git+https://github.com/RoflSecurity/smsnitch-client.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/RoflSecurity/smsnitch-server/issues"
+    "url": "https://github.com/RoflSecurity/smsnitch-client/issues"
   },
-  "homepage": "https://github.com/RoflSecurity/smsnitch-server#readme"
+  "homepage": "https://github.com/RoflSecurity/smsnitch-client#readme",
+  "dependencies": {
+    "ws": "^8.20.0"
+  }
 }

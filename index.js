@@ -1,49 +1,44 @@
-// termux-sms websocket client (listener)
-// npm install ws
+// index.js (CLIENT - SMS listener)
 
 const WebSocket = require('ws');
 
-// ⚠️ remplace par ton IP Termux
+// ⚠️ remplace IP Termux
 const SERVER_URL = 'ws://192.168.1.119:3000';
 
 function connect() {
   const ws = new WebSocket(SERVER_URL);
 
   ws.on('open', () => {
-    console.log('[WS] Connected to server');
+    console.log('[WS] connected');
 
     ws.send(JSON.stringify({
       type: 'client-ready',
-      client: 'termux-sms-list'
+      client: 'sms-listener'
     }));
   });
 
-  ws.on('message', (message) => {
+  ws.on('message', (msg) => {
     try {
-      const data = JSON.parse(message.toString());
+      const data = JSON.parse(msg.toString());
 
       if (data.type === 'sms-send') {
-        const { to, text } = data.data || {};
-
-        console.log('\n--- SMS EVENT ---');
-        console.log('To   :', to);
-        console.log('Text :', text);
-        console.log('-----------------\n');
-
-        // Si tu es sur Termux et veux envoyer le SMS automatiquement :
-        // const { exec } = require('child_process');
-        // exec(`termux-sms-send -n "${to}" "${text}"`);
-
-      } else {
-        console.log('[WS]', data);
+        console.log('\n[SMS OUT]');
+        console.log('To:', data.data.to);
+        console.log('Text:', data.data.text);
       }
+
+      if (data.type === 'sms-inbox') {
+        console.log('\n[SMS INBOX UPDATE]');
+        console.log(data.data);
+      }
+
     } catch (e) {
-      console.log('[WS RAW]', message.toString());
+      console.log('[RAW]', msg.toString());
     }
   });
 
   ws.on('close', () => {
-    console.log('[WS] Disconnected. Reconnecting in 3s...');
+    console.log('[WS] disconnected, reconnecting...');
     setTimeout(connect, 3000);
   });
 
